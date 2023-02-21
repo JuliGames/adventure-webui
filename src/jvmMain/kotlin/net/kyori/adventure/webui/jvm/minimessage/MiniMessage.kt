@@ -17,6 +17,7 @@ import io.ktor.server.websocket.webSocket
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
 import kotlinx.serialization.encodeToString
+import net.juligames.adventure.webui.WebUICoreAdapter
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
@@ -51,6 +52,7 @@ import net.kyori.adventure.webui.websocket.ParseResult
 import net.kyori.adventure.webui.websocket.Placeholders
 import net.kyori.adventure.webui.websocket.Response
 import java.time.Instant
+import java.util.*
 
 private val startedAt = Instant.now()
 
@@ -73,7 +75,9 @@ public val Placeholders?.tagResolver: TagResolver
                     null
                 }
             } ?: listOf()
-        return TagResolver.resolver((stringConverted + componentConverted).filterNotNull())
+        val coreResolver : Optional<TagResolver> = WebUICoreAdapter.compileResolver();
+        return TagResolver.resolver((stringConverted + componentConverted +
+                coreResolver.orElse(TagResolver.empty())).filterNotNull())
     }
 
 /** Entry-point for MiniMessage Viewer. */
@@ -89,6 +93,9 @@ public fun Application.miniMessage() {
         component(FONT_RENDER_HOOK)
         component(TEXT_RENDER_HOOK, 500) // content needs to be set last
     }
+
+    //Start core
+    WebUICoreAdapter.startCore();
 
     BytebinStorage.BYTEBIN_INSTANCE = this.getConfigString("bytebinInstance")
 

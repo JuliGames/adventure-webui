@@ -15,6 +15,7 @@ import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.pingPeriod
 import io.ktor.server.websocket.timeout
 import io.ktor.websocket.WebSocketDeflateExtension
+import net.juligames.adventure.webui.WebUICoreAdapter
 import java.time.Duration
 
 public fun Application.main() {
@@ -48,6 +49,7 @@ public fun Application.main() {
             trace { route -> this@main.log.debug(route.buildText()) }
         }
     }
+
 }
 
 /** Reads a string value from the `config` block in `application.conf`. */
