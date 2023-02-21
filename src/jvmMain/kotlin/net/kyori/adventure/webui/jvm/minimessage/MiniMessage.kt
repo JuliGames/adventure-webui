@@ -1,56 +1,26 @@
 package net.kyori.adventure.webui.jvm.minimessage
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.Application
-import io.ktor.server.application.call
-import io.ktor.server.http.content.defaultResource
-import io.ktor.server.http.content.resource
-import io.ktor.server.http.content.resources
-import io.ktor.server.http.content.static
-import io.ktor.server.request.receiveText
-import io.ktor.server.response.respondText
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
-import io.ktor.server.websocket.webSocket
-import io.ktor.websocket.Frame
-import io.ktor.websocket.readText
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.http.content.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import net.juligames.adventure.webui.WebUICoreAdapter
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
-import net.kyori.adventure.webui.BuildInfo
-import net.kyori.adventure.webui.Serializers
-import net.kyori.adventure.webui.URL_API
-import net.kyori.adventure.webui.URL_BUILD_INFO
-import net.kyori.adventure.webui.URL_EDITOR
-import net.kyori.adventure.webui.URL_MINI_SHORTEN
-import net.kyori.adventure.webui.URL_MINI_TO_HTML
-import net.kyori.adventure.webui.URL_MINI_TO_JSON
-import net.kyori.adventure.webui.URL_MINI_TO_TREE
+import net.kyori.adventure.webui.*
 import net.kyori.adventure.webui.jvm.appendComponent
 import net.kyori.adventure.webui.jvm.getConfigString
 import net.kyori.adventure.webui.jvm.minimessage.editor.installEditor
-import net.kyori.adventure.webui.jvm.minimessage.hook.CLICK_EVENT_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.COMPONENT_CLASS_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.FONT_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.HOVER_EVENT_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.HookManager
-import net.kyori.adventure.webui.jvm.minimessage.hook.INSERTION_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.TEXT_COLOR_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.TEXT_DECORATION_RENDER_HOOK
-import net.kyori.adventure.webui.jvm.minimessage.hook.TEXT_RENDER_HOOK
+import net.kyori.adventure.webui.jvm.minimessage.hook.*
 import net.kyori.adventure.webui.jvm.minimessage.storage.BytebinStorage
-import net.kyori.adventure.webui.tryDecodeFromString
-import net.kyori.adventure.webui.websocket.Call
-import net.kyori.adventure.webui.websocket.Combined
-import net.kyori.adventure.webui.websocket.Packet
-import net.kyori.adventure.webui.websocket.ParseResult
-import net.kyori.adventure.webui.websocket.Placeholders
-import net.kyori.adventure.webui.websocket.Response
+import net.kyori.adventure.webui.websocket.*
 import java.time.Instant
 import java.util.*
 
@@ -75,9 +45,11 @@ public val Placeholders?.tagResolver: TagResolver
                     null
                 }
             } ?: listOf()
-        val coreResolver : Optional<TagResolver> = WebUICoreAdapter.compileResolver();
-        return TagResolver.resolver((stringConverted + componentConverted +
-                coreResolver.orElse(TagResolver.empty())).filterNotNull())
+        val coreResolver: Optional<TagResolver> = WebUICoreAdapter.compileResolver();
+        return TagResolver.resolver(
+            (stringConverted + componentConverted +
+                    coreResolver.orElse(TagResolver.empty())).filterNotNull()
+        )
     }
 
 /** Entry-point for MiniMessage Viewer. */
@@ -124,6 +96,7 @@ public fun Application.miniMessage() {
                                 miniMessage = packet.miniMessage
                                 isolateNewlines = packet.isolateNewlines
                             }
+
                             is Placeholders -> tagResolver = packet.tagResolver
                             null -> continue
                         }
@@ -147,7 +120,8 @@ public fun Application.miniMessage() {
                                             result.append("\n")
                                         }
                                 } else {
-                                    val component = MiniMessage.miniMessage().deserialize(HookManager.render(miniMessage), tagResolver)
+                                    val component = MiniMessage.miniMessage()
+                                        .deserialize(HookManager.render(miniMessage), tagResolver)
                                     result.appendComponent(HookManager.render(component))
                                 }
 

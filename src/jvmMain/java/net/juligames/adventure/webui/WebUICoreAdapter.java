@@ -3,7 +3,6 @@ package net.juligames.adventure.webui;
 import com.hazelcast.core.HazelcastInstance;
 import net.juligames.core.Core;
 import net.juligames.core.adventure.AdventureCore;
-import net.juligames.core.adventure.api.AdventureAPI;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -26,36 +25,36 @@ public class WebUICoreAdapter {
             if (getAdventureCore() != null) {
                 return Optional.of(getAdventureCore().getAdventureTagManager().getResolver());
             }
-        }catch (Exception ignored) {
+        } catch (Exception ignored) {
         }
         return Optional.empty();
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public static @NotNull Core startCore(){
-         core = new Core("webUI");
-         adventureCore = new AdventureCore();
-         adventureCore.start();
+    public static @NotNull Core startCore() {
+        core = new Core("webUI");
+        adventureCore = new AdventureCore();
+        adventureCore.start();
         //stopCore
         Runtime.getRuntime().addShutdownHook(new Thread(WebUICoreAdapter::stopCore));
-         return core;
+        return core;
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public static void stopCore(){
-        if(core != null) core.stop();
+    public static void stopCore() {
+        if (core != null) core.stop();
         if (adventureCore != null) {
             adventureCore.dropApiService();
         }
     }
 
     @ApiStatus.Experimental
-    public static boolean isCoreRunning(){
-        if(core == null) return false;
+    public static boolean isCoreRunning() {
+        if (core == null) return false;
         try {
             HazelcastInstance orThrow = core.getOrThrow();
             return orThrow != null;
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return false;
         }
     }
