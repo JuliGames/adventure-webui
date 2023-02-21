@@ -1,20 +1,13 @@
 package net.kyori.adventure.webui.jvm
 
-import io.ktor.http.CacheControl
-import io.ktor.http.ContentType
-import io.ktor.http.content.CachingOptions
-import io.ktor.server.application.Application
-import io.ktor.server.application.install
-import io.ktor.server.application.log
-import io.ktor.server.plugins.cachingheaders.CachingHeaders
-import io.ktor.server.plugins.compression.Compression
-import io.ktor.server.plugins.compression.deflate
-import io.ktor.server.plugins.compression.gzip
-import io.ktor.server.routing.routing
-import io.ktor.server.websocket.WebSockets
-import io.ktor.server.websocket.pingPeriod
-import io.ktor.server.websocket.timeout
-import io.ktor.websocket.WebSocketDeflateExtension
+import io.ktor.http.*
+import io.ktor.http.content.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.cachingheaders.*
+import io.ktor.server.plugins.compression.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.ktor.websocket.*
 import java.time.Duration
 
 public fun Application.main() {
@@ -28,8 +21,10 @@ public fun Application.main() {
             when (outgoingContent.contentType?.withoutParameters()) {
                 ContentType.Image.JPEG, ContentType.parse("application/x-font-woff") ->
                     CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 31536000))
+
                 ContentType.Text.CSS, ContentType.Application.JavaScript ->
                     CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 86400))
+
                 else -> null
             }
         }
@@ -48,6 +43,7 @@ public fun Application.main() {
             trace { route -> this@main.log.debug(route.buildText()) }
         }
     }
+
 }
 
 /** Reads a string value from the `config` block in `application.conf`. */

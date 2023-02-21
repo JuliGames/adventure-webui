@@ -3,6 +3,7 @@ adventure = "4.12.0"
 kotlin = "1.8.10"
 ktlint = "0.48.2"
 ktor = "2.2.3"
+core = "1.4-SNAPSHOT"
 
 [plugins]
 indra-git = { id = "net.kyori.indra.git", version = "3.0.1" }
@@ -25,6 +26,8 @@ ktor-server-websockets = { group = "io.ktor", name = "ktor-server-websockets", v
 ktor-server-caching-headers = { group = "io.ktor", name = "ktor-server-caching-headers", version.ref = "ktor" }
 ktor-server-compression = { group = "io.ktor", name = "ktor-server-compression", version.ref = "ktor" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.4.5" }
+juligames-adventure-core = { group = "net.juligames.core", name = "AdventureCore", version.ref = "core" }
+juligames-core = {group = "net.juligames.core", name = "Core", version.ref = "core"}
 
 zKtlint = { group = "com.pinterest", name = "ktlint", version.ref = "ktlint"}
 

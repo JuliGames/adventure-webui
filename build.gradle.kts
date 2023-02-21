@@ -18,6 +18,9 @@ repositories {
             snapshotsOnly()
         }
     }
+    maven(url = uri("https://maven.juligames.net/juligames")) {
+        name = "juligames"
+    }
 }
 
 spotless {
@@ -71,6 +74,9 @@ kotlin {
                 implementation(libs.adventure.text.serializer.gson)
                 implementation(libs.cache4k)
                 implementation(libs.logback.classic)
+                implementation(libs.juligames.adventure.core)
+                implementation(libs.juligames.core)
+                // implementation("net.juligames.core:Core:1.4-SNAPSHOT")
             }
         }
     }
