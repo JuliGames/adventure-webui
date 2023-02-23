@@ -38,7 +38,7 @@
 }
 /* output pane */
 #output-pane {
-    background-image: url("../img/grass.jpg");
+    background-image: url("../img/desert.jpg");
     background-size: cover;
 }
 #output-pane #server-list-icon,
