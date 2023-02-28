@@ -4,7 +4,7 @@
 
 A web interface for [MiniMessage](https://github.com/KyoriPowered/adventure-text-minimessage).
 
-You can access it here: https://webui.advntr.dev/
+You can access it here: https://editor.juligames.net/
 
 ---
 
@@ -31,7 +31,7 @@ We appreciate contributions of any type. For any new features or typo-fix/style 
 
 ### Credits
 
-This project is based on MiniDigger's [MiniMessageViewer](https://github.com/MiniDigger/MiniMessageViewer).
+This project is based on MiniDigger's [MiniMessageViewer](https://github.com/MiniDigger/MiniMessageViewer) and Adventure's [MiniMessageViewer](https://github.com/KyoriPowered/adventure-webui).
 
 The font used can be found [here](https://fonts2u.com/minecraft-regular.font).
 
